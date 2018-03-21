@@ -1,10 +1,21 @@
 #include <iostream>
 #include "world.h"
 void World::printlvl(int personX, int personY) {
+  this->setCount();
   for(int y = 0; y < BOARDSIZE; y++) {
     for(int x = 0; x < BOARDSIZE; x++) {
       if(x == personX && y == personY) {
-        std::cout << " X ";
+        switch(this->count) {
+          case 0:
+            std::cout << " o ";
+            break;
+          case 1:
+            std::cout << " O ";
+            break;
+          default:
+            std::cout << " o ";
+            break;
+        }
         continue;
       }
       switch(this->map[y][x]){
@@ -68,12 +79,48 @@ int World::changeWorld(int lvl) {
       }
       this->currentLvl = 2;
       return 1;
+    case 3:
+      for(int x = 0; x < BOARDSIZE; x++) {
+        for(int y = 0; y < BOARDSIZE; y++) {
+          this->map[y][x] = this->lvlfour[y][x];
+        }
+      }
+      this->currentLvl = 3;
+      return 1;
+    case 4:
+      for(int x = 0; x < BOARDSIZE; x++) {
+        for(int y = 0; y < BOARDSIZE; y++) {
+          this->map[y][x] = this->lvlfive[y][x];
+        }
+      }
+      this->currentLvl = 4;
+      return 1;
+    case 5:
+      for(int x = 0; x < BOARDSIZE; x++) {
+        for(int y = 0; y < BOARDSIZE; y++) {
+          this->map[y][x] = this->lvlsix[y][x];
+        }
+      }
+      this->currentLvl = 5;
+      return 1;
+    case 6:
+      for(int x = 0; x < BOARDSIZE; x++) {
+        for(int y = 0; y < BOARDSIZE; y++) {
+          this->map[y][x] = this->lvlseven[y][x];
+        }
+      }
+      this->currentLvl = 6;
+      return 1;
     default:
       return -1;
   }
 }
 int World::getCurrentLvl() {
   return this->currentLvl;
+}
+
+void World::setCount() {
+  this->count = this->count++ % 2;
 }
 
 World::World() {
@@ -83,4 +130,5 @@ World::World() {
     }
   }
   this->currentLvl = 0;
+  this->count = 0;
 }
