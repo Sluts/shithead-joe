@@ -1,10 +1,18 @@
 #include <iostream>
+#include <stdlib.h>
 #include <conio.h>
+#include <time.h>
 #include "person.h"
 #include "world.h"
 
 void checkPos(Person*, World*);
 void commitMovement(Person*, World*);
+void scoreboard(Person*);
+
+void scoreboard(Person* p) {
+  printf("\nBoredom: %d\tCoffees: %d\nAnger: %d\tHats: %d\nHealth: %d\tMoney: $%d", p->getBoredom(), p->getCoffeesDrank(), p->getAnger(), p->getHatCount(), p->getHealth(), p->getMoney());
+}
+
 
 /*
 * controls map switching
@@ -93,13 +101,21 @@ void checkPos(Person* p, World* w) {
     default:
       break;
   }
+  w->printlvl(p->getX(), p->getY());
 }
+
 
 void commitMovement(Person* p, World* w) {
   int hit;
   hit = w->evalPos(p->getX(), p->getY());
   switch(hit) {
-    case(1):
+    case 0:
+      srand(time(NULL));
+      if(rand() % 3 == 0) {
+        printf("something bad happens");
+      }
+      break;
+    case 1:
       switch(p->getDirection()) {
         case(0):           
           p->move(0, 1);
@@ -114,10 +130,37 @@ void commitMovement(Person* p, World* w) {
           p->move(1, 0);
           break;
       }
+      break;
+    case 7:
+      p->setCoffeesDrank(1);
+      w->remove(p->getX(), p->getY(), 6);
+      break;
+    case 3:
+      p->setCoffeesDrank(1);
+      w->remove(p->getX(), p->getY(), 0);
+      break;
+    case 8:
+      p->setMoney(1);
+      w->remove(p->getX(), p->getY(), 6);
+      break;
+    case 4:
+      p->setMoney(1);
+      w->remove(p->getX(), p->getY(), 0);
+      break;
+    case 9:
+      p->setAnger(25);
+      w->remove(p->getX(), p->getY(), 6);
+      break;
+    case 5:
+      p->setAnger(25);
+      w->remove(p->getX(), p->getY(), 0);
+      break;
+    default:
+      break;
   }
 }
 
-int main() {
+int main(void) {
   Person* p = new Person();
   World* w = new World();
   int go, hit;
@@ -133,37 +176,43 @@ int main() {
           p->setDirection(0);
           commitMovement(p, w);
           checkPos(p, w);
+          // w->printlvl(p->getX(), p->getY());
           w->printlvl(p->getX(), p->getY());
           std::cout << p->getX() << ' ' << p->getY();
+          scoreboard(p);
           break;
         case 'd':
           p->move(1, 0);
           p->setDirection(1);
           commitMovement(p, w);
           checkPos(p, w);
-          w->printlvl(p->getX(), p->getY());
+          // w->printlvl(p->getX(), p->getY());
           std::cout << p->getX() << ' ' << p->getY();
+          scoreboard(p);
           break;
         case 's':
           p->move(0, 1);
           p->setDirection(2);
           commitMovement(p, w);
           checkPos(p, w);
-          w->printlvl(p->getX(), p->getY());
+          // w->printlvl(p->getX(), p->getY());
           std::cout << p->getX() << ' ' << p->getY();
+          scoreboard(p);
           break;
         case 'a':
           p->move(-1, 0);
           p->setDirection(3);
           commitMovement(p, w);
           checkPos(p, w);
-          w->printlvl(p->getX(), p->getY());
+          // w->printlvl(p->getX(), p->getY());
           std::cout << p->getX() << ' ' << p->getY();
+          scoreboard(p);
           break;
         case 'q':
           go = 0;
           break;
         default:
+          w->printlvl(p->getX(), p->getY());
           break;
       }
     }

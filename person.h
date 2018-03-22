@@ -8,6 +8,8 @@
 
 struct Person {
 private:
+  int money;
+  int health;
   int boredom;
   int coffeesDrank;
   int hatCount;
@@ -22,6 +24,8 @@ private:
   
 public:
   // getters
+  int getMoney();
+  int getHealth();
   int getBoredom();
   int getCoffeesDrank();
   int getHatCount();
@@ -34,6 +38,8 @@ public:
   int getX();
   int getY();
   // setters
+  void setMoney(int);
+  void setHealth(int);
   void setBoredom(int);
   void setCoffeesDrank(int);
   void setHatCount(int);

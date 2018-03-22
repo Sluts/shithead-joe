@@ -123,6 +123,10 @@ void World::setCount() {
   this->count = this->count++ % 2;
 }
 
+void World::remove(int x, int y, int img) {
+  this->map[y][x] = img;
+}
+
 World::World() {
   for(int x = 0; x < BOARDSIZE; x++) {
     for(int y = 0; y < BOARDSIZE; y++) {

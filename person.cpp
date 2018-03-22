@@ -1,5 +1,11 @@
 #include "person.h"
 // getters
+int Person::getMoney() {
+  return this->money;
+}
+int Person::getHealth() {
+  return this->health;
+}
 int Person::getBoredom() {
   return this->boredom;
 }
@@ -34,6 +40,12 @@ int Person::getY() {
   return this->yPos;
 }
 // setters
+void Person::setMoney(int money) {
+  this->money += money;
+}
+void Person::setHealth(int health) {
+  this->health += health;
+}
 void Person::setBoredom(int boredlvl) {
   this->boredom += boredlvl;
   if(this->boredom > MAXBOREDOM) {
@@ -69,6 +81,8 @@ void Person::setMoving(int moving) {
 }
 // methods
 Person::Person() {
+  this->money = 5;
+  this->health = 420;
   this->boredom = 0;
   this->coffeesDrank = 0;
   this->hatCount = 0;
