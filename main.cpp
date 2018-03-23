@@ -108,7 +108,8 @@ void checkPos(Person* p, World* w) {
       break;
   }
   w->printlvl(p->getX(), p->getY());
-  std::cout << p->getX() << ' ' << p->getY();
+  std::cout << p->getX() << ' ' << p->getY() << std::endl;
+  std::cout << "map: " << w->getCurrentLvl();
 }
 
 void die(Person* p, World* w) {
@@ -195,6 +196,10 @@ void commitMovement(Person* p, World* w) {
         }
       }
       break;
+    case 10:
+    case 11:
+    case 12:
+    case 13:
     case 1: // ive hit a wall, move back the opposite direction by -1 * previous move
       switch(p->getDirection()) {
         case(0):           
@@ -235,6 +240,10 @@ void commitMovement(Person* p, World* w) {
       break;
     case 5:
       p->setAnger(25);
+      w->remove(p->getX(), p->getY(), 0);
+      break;
+    case 14:
+      p->setHatCount(1);
       w->remove(p->getX(), p->getY(), 0);
       break;
     default:

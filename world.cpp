@@ -41,6 +41,21 @@ void World::printlvl(int personX, int personY) {
         case 5: // shit
           std::cout << " s ";
           break;
+        case 10: // 
+          std::cout << "___";
+          break;
+        case 11: // 
+          std::cout << "  /";
+          break;
+        case 12: // 
+          std::cout << "\\  ";
+          break;
+        case 13: // person?
+          std::cout << " 8 ";
+          break;
+        case 14: // hat
+          std::cout << " H ";
+          break;
         default:
           std::cout << this->map[x][y];
           break; 
