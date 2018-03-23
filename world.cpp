@@ -111,6 +111,22 @@ int World::changeWorld(int lvl) {
       }
       this->currentLvl = 6;
       return 1;
+    case 10:
+      for(int x = 0; x < BOARDSIZE; x++) {
+        for(int y = 0; y < BOARDSIZE; y++) {
+          this->map[y][x] = this->fightSceneOne[y][x];
+        }
+      }
+      this->currentLvl = 10;
+      return 1;
+    case 666:
+      for(int x = 0; x < BOARDSIZE; x++) {
+        for(int y = 0; y < BOARDSIZE; y++) {
+          this->map[y][x] = this->death[y][x];
+        }
+      }
+      this->currentLvl = 666;
+      return 1;
     default:
       return -1;
   }

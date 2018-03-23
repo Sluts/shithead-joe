@@ -5,12 +5,18 @@
 #include "person.h"
 #include "world.h"
 
+#define BADCHANCE 3
+#define BADEVENTS 5
+
+
+static int go;
 void checkPos(Person*, World*);
 void commitMovement(Person*, World*);
 void scoreboard(Person*);
+void die(Person*, World*);
 
 void scoreboard(Person* p) {
-  printf("\nBoredom: %d\tCoffees: %d\nAnger: %d\tHats: %d\nHealth: %d\tMoney: $%d", p->getBoredom(), p->getCoffeesDrank(), p->getAnger(), p->getHatCount(), p->getHealth(), p->getMoney());
+  printf("\nStrength: %d\tIntelligence: %d\nBoredom: %d\tCoffees: %d\nAnger: %d\tHats: %d\nHealth: %d\tMoney: $%d", p->getStrength(), p->getIntelligence(), p->getBoredom(), p->getCoffeesDrank(), p->getAnger(), p->getHatCount(), p->getHealth(), p->getMoney());
 }
 
 
@@ -102,20 +108,94 @@ void checkPos(Person* p, World* w) {
       break;
   }
   w->printlvl(p->getX(), p->getY());
+  std::cout << p->getX() << ' ' << p->getY();
 }
 
+void die(Person* p, World* w) {
+  p->move(20 - p->getX(), 17 - p->getY());
+  w->changeWorld(666);
+  go = 0;
+}
 
 void commitMovement(Person* p, World* w) {
   int hit;
   hit = w->evalPos(p->getX(), p->getY());
+  int scenerioBit = 0;
+  char* msgs[] = {
+    "",
+    "\nYou got mugged",
+    "\nYou spilled your coffee",
+    "\nA stranger assaults you",
+    "\nA wild dog bites you"
+    };
   switch(hit) {
     case 0:
       srand(time(NULL));
-      if(rand() % 3 == 0) {
-        printf("something bad happens");
+      if(rand() % BADCHANCE == 0) {
+        srand(rand());
+        switch(rand() % BADEVENTS) {
+          case 0:
+          case 1:
+            system("cls");
+            std::cout << "You're being mugged! What do you want to do?\n1. Cry and beg for mercy.\n2. Fight\n3. Run\n>>> ";
+            int i;
+            std::cin >> i;
+            switch(i) { // eval user input for mugging scenerio
+              case 2:
+                std::cout << "\n...obviously you lose the fight...\nThey beat you more for making them work for it." << std::endl;
+                scenerioBit = 1;
+                p->setMoney(-1000);
+                if(!p->setHealth(-55)){
+                  die(p, w);
+                }
+                p->setAnger(70);
+                break;
+              case 3:
+                std::cout << "\n...obviously they catch you...\nThey beat you even more for making them run; no one likes to run." << std::endl;
+                scenerioBit = 1;
+                p->setMoney(-1000);
+                if(!p->setHealth(-75)){
+                  die(p, w);
+                }
+                p->setAnger(80);
+                break;
+              case 1:
+              default:
+                std::cout << "\nThey feel bad seeing a grown adult cry so they barely beat you up." << std::endl;
+                scenerioBit = 1;
+                p->setMoney(-1000);
+                if(!p->setHealth(-5)){
+                  die(p, w);
+                }
+                p->setAnger(50);
+                break;
+            }
+            break;
+          case 2:
+            scenerioBit = 2;
+            p->setAnger(25);
+            p->setCoffeesDrank(-1);
+            break;
+          case 3:
+            scenerioBit = 3;
+            if(!p->setHealth(-20)) {
+              die(p, w);
+            }
+            p->setAnger(35);
+            break;
+          case 4:
+            scenerioBit = 4;
+            if(!p->setHealth(-20)) {
+              die(p, w);
+            }
+            p->setAnger(45);
+            break;
+          default:
+            break;
+        }
       }
       break;
-    case 1:
+    case 1: // ive hit a wall, move back the opposite direction by -1 * previous move
       switch(p->getDirection()) {
         case(0):           
           p->move(0, 1);
@@ -136,7 +216,9 @@ void commitMovement(Person* p, World* w) {
       w->remove(p->getX(), p->getY(), 6);
       break;
     case 3:
-      p->setCoffeesDrank(1);
+      if(!p->setCoffeesDrank(1)) {
+        die(p, w);
+      }
       w->remove(p->getX(), p->getY(), 0);
       break;
     case 8:
@@ -158,12 +240,15 @@ void commitMovement(Person* p, World* w) {
     default:
       break;
   }
+  checkPos(p, w);
+  std::cout << *(msgs + scenerioBit) << std::endl; // event selected with sceneriobit
+  scoreboard(p);
 }
 
 int main(void) {
   Person* p = new Person();
   World* w = new World();
-  int go, hit;
+  int hit;
   char userIn;
   go = 1;
   w->printlvl(p->getX(), p->getY());
@@ -174,39 +259,18 @@ int main(void) {
         case 'w':
           p->move(0, -1);
           p->setDirection(0);
-          commitMovement(p, w);
-          checkPos(p, w);
-          // w->printlvl(p->getX(), p->getY());
-          w->printlvl(p->getX(), p->getY());
-          std::cout << p->getX() << ' ' << p->getY();
-          scoreboard(p);
           break;
         case 'd':
           p->move(1, 0);
           p->setDirection(1);
-          commitMovement(p, w);
-          checkPos(p, w);
-          // w->printlvl(p->getX(), p->getY());
-          std::cout << p->getX() << ' ' << p->getY();
-          scoreboard(p);
           break;
         case 's':
           p->move(0, 1);
           p->setDirection(2);
-          commitMovement(p, w);
-          checkPos(p, w);
-          // w->printlvl(p->getX(), p->getY());
-          std::cout << p->getX() << ' ' << p->getY();
-          scoreboard(p);
           break;
         case 'a':
           p->move(-1, 0);
           p->setDirection(3);
-          commitMovement(p, w);
-          checkPos(p, w);
-          // w->printlvl(p->getX(), p->getY());
-          std::cout << p->getX() << ' ' << p->getY();
-          scoreboard(p);
           break;
         case 'q':
           go = 0;
@@ -215,6 +279,7 @@ int main(void) {
           w->printlvl(p->getX(), p->getY());
           break;
       }
+      commitMovement(p, w);
     }
   }
   delete(p);

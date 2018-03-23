@@ -2,12 +2,14 @@
 #define __PERSON_H__
 #define MAXITEMS 10
 #define MAXBOREDOM 75
-#define MAXCOFFEES 20
+#define MAXCOFFEES 5
 #define MAXHAPPINESS 90
 #define MAXANGER 80
 
 struct Person {
 private:
+  int strength;
+  int intelligence;
   int money;
   int health;
   int boredom;
@@ -17,13 +19,14 @@ private:
   int speed;
   int direction; // 0 = north 1 = east 2 = south 3 = west
   int performance;
-  int happiness;
   int moving;
   int xPos;
   int yPos;
   
 public:
   // getters
+  int getStrength();
+  int getIntelligence();
   int getMoney();
   int getHealth();
   int getBoredom();
@@ -33,21 +36,21 @@ public:
   int getSpeed();
   int getDirection();
   int getPerformance();
-  int getHappiness();
   int getMoving();
   int getX();
   int getY();
   // setters
+  void setStrength(int);
+  void setIntelligence(int);
   void setMoney(int);
-  void setHealth(int);
+  int setHealth(int);
   void setBoredom(int);
-  void setCoffeesDrank(int);
+  int setCoffeesDrank(int); // death setters return ints 1=alive 0=event caused death
   void setHatCount(int);
   void setAnger(int);
   void setSpeed(int);
   void setDirection(int);
   void setPerformance(int);
-  void setHappiness(int);
   void setMoving(int);
   // methods
   Person();

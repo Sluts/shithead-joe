@@ -1,5 +1,11 @@
 #include "person.h"
 // getters
+int Person::getStrength() {
+  return this->strength;
+}
+int Person::getIntelligence() {
+  return this->intelligence;
+}
 int Person::getMoney() {
   return this->money;
 }
@@ -27,9 +33,6 @@ int Person::getDirection() {
 int Person::getPerformance() {
   return this->performance;
 }
-int Person::getHappiness() {
-  return this->happiness;
-}
 int Person::getMoving() {
   return this->moving;
 }
@@ -40,23 +43,52 @@ int Person::getY() {
   return this->yPos;
 }
 // setters
+void Person::setStrength(int strength) {
+  this->strength += strength;
+  if(this->strength < 0) {
+    this->strength = 0;
+  }
+}
+void Person::setIntelligence(int intelligence) {
+  this->intelligence += intelligence;
+  if(this->intelligence < 0) {
+    this->intelligence = 0;
+  }
+}
 void Person::setMoney(int money) {
   this->money += money;
+  if(this->money < 0) {
+    this->money = 0;
+  }
 }
-void Person::setHealth(int health) {
+int Person::setHealth(int health) {
   this->health += health;
+  if(this->health < 0) {
+    this->die(2);
+    this->health = 0;
+    return 0;
+  }
+  return 1;
 }
 void Person::setBoredom(int boredlvl) {
   this->boredom += boredlvl;
   if(this->boredom > MAXBOREDOM) {
     this->die(0);
   }
+  if(this->boredom < 0) {
+    this->boredom = 0;
+  }
 }
-void Person::setCoffeesDrank(int coffees) {
+int Person::setCoffeesDrank(int coffees) {
   this->coffeesDrank += coffees;
   if(this->coffeesDrank > MAXCOFFEES) {
     this->die(1);
+    return 0;
   }
+  if(this->coffeesDrank < 0) {
+    this->coffeesDrank = 0;
+  }
+  return 1;
 }
 void Person::setHatCount(int hats) {
   this->hatCount += hats;
@@ -73,14 +105,13 @@ void Person::setDirection(int direction) {
 void Person::setPerformance(int performance) {
   this->performance += performance;
 }
-void Person::setHappiness(int happiness) {
-  this->happiness += happiness;
-}
 void Person::setMoving(int moving) {
   this->moving = moving;
 }
 // methods
 Person::Person() {
+  this->strength = 1;
+  this->intelligence = 1;
   this->money = 5;
   this->health = 420;
   this->boredom = 0;
@@ -90,7 +121,6 @@ Person::Person() {
   this->speed = 1;
   this->direction = 0; // 0 = north 1 = east 2 = south 3 = west
   this->performance = 0;
-  this->happiness = 50;
   this->moving = 0;
   this->xPos = 4;
   this->yPos = 5;
@@ -100,5 +130,5 @@ void Person::move(int x, int y) {
   this->yPos += y;
 }
 void Person::die(int why){
-
+  
 }
