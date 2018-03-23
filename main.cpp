@@ -113,6 +113,7 @@ void checkPos(Person* p, World* w) {
 }
 
 void die(Person* p, World* w) {
+  system("color 0c");
   p->move(20 - p->getX(), 17 - p->getY());
   w->changeWorld(666);
   go = 0;
@@ -282,7 +283,10 @@ int main(void) {
           p->setDirection(3);
           break;
         case 'q':
-          go = 0;
+          delete(p);
+          delete(w);
+          system("cls");
+          return 0;
           break;
         default:
           w->printlvl(p->getX(), p->getY());
@@ -293,5 +297,13 @@ int main(void) {
   }
   delete(p);
   delete(w);
+  char blank;
+  std::cout << "\nEnter 'n' for new game\nEnter anything else to quit: ";
+  std::cin >> blank;
+  system("color 07");
+  system("cls");
+  if(blank == 'n') {
+    main();
+  }
   return 1;
 }

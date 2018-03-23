@@ -63,7 +63,7 @@ void Person::setMoney(int money) {
 }
 int Person::setHealth(int health) {
   this->health += health;
-  if(this->health < 0) {
+  if(this->health <= 0) {
     this->die(2);
     this->health = 0;
     return 0;
