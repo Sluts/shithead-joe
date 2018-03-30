@@ -42,6 +42,9 @@ int Person::getX() {
 int Person::getY() {
   return this->yPos;
 }
+int Person::getIsNazi() {
+	return this->isNazi;
+}
 // setters
 void Person::setStrength(int strength) {
   this->strength += strength;
@@ -108,6 +111,9 @@ void Person::setPerformance(int performance) {
 void Person::setMoving(int moving) {
   this->moving = moving;
 }
+void Person::setIsNazi(int nazi) {
+	this->isNazi = nazi;
+}
 // methods
 Person::Person() {
   this->strength = 1;
@@ -124,6 +130,7 @@ Person::Person() {
   this->moving = 0;
   this->xPos = 4;
   this->yPos = 5;
+	this->isNazi = 0;
 }
 void Person::move(int x, int y) {
   this->xPos += x;

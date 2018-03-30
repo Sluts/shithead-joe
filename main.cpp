@@ -29,6 +29,10 @@ void checkPos(Person* p, World* w) {
   switch(w->getCurrentLvl()) {
     case(0):
       if(p->getX() == 1 && p->getY() == 20) {
+				if(p->getIsNazi()) {
+					std::cout << "no" << std::endl;
+					break;
+				}
         w->changeWorld(1);
         p->move(19 - p->getX(), 13 - p->getY());
       }
@@ -132,15 +136,59 @@ void commitMovement(Person* p, World* w) {
     };
   switch(hit) {
     case 0:
+			static int i;
       srand(time(NULL));
       if(rand() % BADCHANCE == 0) {
         srand(rand());
         switch(rand() % BADEVENTS) {
           case 0:
+            system("cls");
+            std::cout << "You find yourself surrounded by Nazis! They want you to join their Nazi gang. What do you want to do?\n1. Cry and beg for mercy\n2. Fight\n3. Join\n4. Run\n>>> ";
+            std::cin >> i;
+            switch(i) { // eval user input for mugging scenerio
+              case 2:
+                std::cout << "\n...obviously you lose the fight...\nThey beat you more for making them work for it." << std::endl;
+                scenerioBit = 0;
+                p->setMoney(-1000);
+                if(!p->setHealth(-105)){
+                  die(p, w);
+                }
+                p->setAnger(70);
+                break;
+              case 3:
+                std::cout << "\nThey jump you in. You are now a Nazi..." << std::endl;
+                scenerioBit = 0;
+                if(!p->setHealth(-45)){
+                  die(p, w);
+                }
+                p->setAnger(-80);
+								p->setIsNazi(1);
+                break;
+              case 4:
+                std::cout << "\n...obviously they catch you...\nThey beat you even more for making them run; no one likes to run." << std::endl;
+                scenerioBit = 0;
+                p->setMoney(-1000);
+                if(!p->setHealth(-125)){
+                  die(p, w);
+                }
+                p->setAnger(80);
+                break;
+              case 1:
+              default:
+                std::cout << "\nThey beat you into a coma, you awake several months later." << std::endl;
+                scenerioBit = 0;
+                p->setMoney(-1000);
+                if(!p->setHealth(-5)){
+                  die(p, w);
+                }
+								p->setStrength( -1 * (p->getStrength() * .5));
+                p->setAnger(-50);
+                break;
+            }
+            break;
           case 1:
             system("cls");
             std::cout << "You're being mugged! What do you want to do?\n1. Cry and beg for mercy.\n2. Fight\n3. Run\n>>> ";
-            int i;
             std::cin >> i;
             switch(i) { // eval user input for mugging scenerio
               case 2:

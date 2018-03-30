@@ -22,6 +22,7 @@ private:
   int moving;
   int xPos;
   int yPos;
+	int isNazi;
   
 public:
   // getters
@@ -39,6 +40,7 @@ public:
   int getMoving();
   int getX();
   int getY();
+	int getIsNazi();
   // setters
   void setStrength(int);
   void setIntelligence(int);
@@ -52,6 +54,7 @@ public:
   void setDirection(int);
   void setPerformance(int);
   void setMoving(int);
+	void setIsNazi(int);
   // methods
   Person();
   void move(int, int);
